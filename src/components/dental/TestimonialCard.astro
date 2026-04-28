@@ -1,0 +1,23 @@
+---
+interface Props {
+  name: string;
+  quote: string;
+}
+
+const { name, quote } = Astro.props;
+---
+
+<div class="bg-white p-8 rounded-[8px] border border-[#e5edf5] shadow-premium-card">
+  <div class="flex items-center gap-4 mb-4">
+    <div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center text-xs text-slate-500">Img</div>
+    <div>
+      <h4 class="font-semibold text-on-surface">{name}</h4>
+      <div class="text-yellow-400 text-sm">★★★★★</div>
+    </div>
+  </div>
+  <p class="font-body-md text-sm text-on-surface-variant italic mb-4">"{quote}"</p>
+  <div class="bg-slate-100 p-3 rounded-md flex items-center gap-2 cursor-pointer hover:bg-slate-200 transition-colors">
+    <span class="material-symbols-outlined text-primary">play_circle</span>
+    <span class="text-xs text-on-surface font-medium">Listen to Audio Testimonial</span>
+  </div>
+</div>

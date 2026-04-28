@@ -1,0 +1,16 @@
+---
+import DoctorCard from './DoctorCard.astro';
+import { doctors } from '../../data/doctors';
+---
+
+<section class="py-section-gap px-6 max-w-container-max mx-auto">
+  <div class="text-center mb-16">
+    <h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Meet Our Specialists</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">Dedicated professionals guiding your smile journey.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    {doctors.map(doc => (
+      <DoctorCard name={doc.name} role={doc.role} bio={doc.bio} />
+    ))}
+  </div>
+</section>

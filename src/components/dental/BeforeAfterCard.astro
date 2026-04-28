@@ -1,0 +1,19 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<div class="bg-white p-4 rounded-[8px] shadow-premium-card border border-[#e5edf5]">
+  <div class="relative h-[300px] bg-slate-200 rounded-md overflow-hidden mb-4">
+    <div class="absolute inset-0 flex">
+      <div class="w-1/2 bg-slate-300 border-r-2 border-white flex items-center justify-center text-slate-500 font-medium">Before</div>
+      <div class="w-1/2 bg-slate-200 flex items-center justify-center text-slate-500 font-medium">After</div>
+    </div>
+  </div>
+  <h3 class="font-h3 text-lg text-on-surface mb-1">{title}</h3>
+  <p class="font-body-md text-sm text-on-surface-variant">{description}</p>
+</div>

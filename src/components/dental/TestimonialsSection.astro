@@ -1,0 +1,21 @@
+---
+import TestimonialCard from './TestimonialCard.astro';
+import { testimonials } from '../../data/testimonials';
+---
+
+<section class="py-section-gap px-6 bg-surface max-w-container-max mx-auto">
+  <div class="text-center mb-16">
+    <h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Patient Stories</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">Hear from those who have transformed their smiles.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    {testimonials.map(t => (
+      <TestimonialCard name={t.name} quote={t.quote} />
+    ))}
+  </div>
+  <div class="text-center">
+    <a class="inline-flex items-center gap-2 text-primary hover:text-surface-tint font-medium font-body-md transition-colors" href="#">
+      Read more reviews on Google <span class="material-symbols-outlined text-sm">open_in_new</span>
+    </a>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+---
+interface Props {
+  name: string;
+  role: string;
+  bio: string;
+}
+
+const { name, role, bio } = Astro.props;
+---
+
+<div class="bg-white rounded-[8px] overflow-hidden border border-[#e5edf5] shadow-premium-card text-center pb-6">
+  <div class="h-[250px] bg-slate-200 flex items-center justify-center text-slate-500 mb-6">
+    Photo Placeholder
+  </div>
+  <h3 class="font-h3 text-xl text-on-surface mb-1">{name}</h3>
+  <p class="font-body-md text-sm text-primary font-medium mb-3">{role}</p>
+  <p class="font-body-md text-sm text-on-surface-variant px-6">{bio}</p>
+</div>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Elite Dental Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#0066cc",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#51647d",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d7e3ff",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#aac7ff",
+                        "inverse-surface": "#2f3132",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#071c32",
+                        "on-primary-fixed": "#001b3e",
+                        "surface-bright": "#f9f9fb",
+                        "surface-variant": "#e2e2e4",
+                        "surface-dim": "#d9dadc",
+                        "surface-container-high": "#e8e8ea",
+                        "secondary-container": "#cee1ff",
+                        "on-tertiary-container": "#ebe8e5",
+                        "background": "#ffffff", // Pure White canvas
+                        "tertiary-fixed": "#e5e2df",
+                        "inverse-on-surface": "#f0f0f2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#474745",
+                        "on-primary-fixed-variant": "#00458e",
+                        "on-primary-container": "#dfe8ff",
+                        "surface-container-low": "#f3f3f5",
+                        "outline": "#727784",
+                        "on-surface": "#061b31", // Deep Navy headings
+                        "outline-variant": "#c1c6d5",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#b5c8e5",
+                        "on-tertiary-fixed": "#1c1c1a",
+                        "on-secondary-fixed-variant": "#364860",
+                        "on-background": "#1a1c1d",
+                        "primary": "#0066cc", // Action Blue
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#d3e4ff",
+                        "tertiary-container": "#696866",
+                        "surface-tint": "#005cba",
+                        "tertiary-fixed-dim": "#c8c6c3",
+                        "on-surface-variant": "#414753",
+                        "surface-container": "#eeeef0",
+                        "surface": "#f9f9fb",
+                        "tertiary": "#51504e",
+                        "surface-container-highest": "#e2e2e4",
+                        "inverse-primary": "#aac7ff",
+                        "secondary": "#4d6079"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1200px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "gutter": "32px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "display-hero": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["17px", {"lineHeight": "1.5", "letterSpacing": "+0.01em", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.25", "letterSpacing": "-0.02em", "fontWeight": "300"}], // Adjusted weight
+                        "body-md": ["15px", {"lineHeight": "1.5", "letterSpacing": "+0.01em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "300"}], // Adjusted weight
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "300"}], // Adjusted weight
+                        "display-hero": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "300"}]
+                    },
+                    boxShadow: {
+                        'premium-card': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #ffffff; color: #1a1c1d; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 border-b border-slate-200/50 bg-white/70 backdrop-blur-xl transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="text-xl font-bold tracking-tighter text-slate-900">
+                Elite Dental Studio
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-blue-600 transition-colors" href="#">Smile Gallery</a>
+<a class="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-blue-600 transition-colors" href="#">Treatments</a>
+<a class="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-blue-600 transition-colors" href="#">Specialists</a>
+<a class="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-blue-600 transition-colors" href="#">Technology</a>
+<a class="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-blue-600 transition-colors" href="#">Reviews</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block bg-primary text-white font-sans text-sm font-medium tracking-tight px-5 py-2.5 rounded-full hover:opacity-80 scale-95 active:scale-90 transition-all duration-200 shadow-sm">
+                    Book Consultation
+                </button>
+<button class="md:hidden text-slate-900 p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center justify-center bg-surface overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Clinic Interior" class="w-full h-full object-cover object-center opacity-40 mix-blend-multiply" data-alt="Modern bright dental clinic interior with state of the art equipment, clean white aesthetic, soft natural light pouring through large windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWydST5Ooc-uxow5hkX-wAGM2JGkhyLk-j2cb5AMweolZnUqbHCTjdk-BDvtlgpq-kvmtfo0s2Kz9bmcS49a0K7I-Rft7f0gjWIdzhLWxCiJ7_bwuYU88SYKFQp-bJsWI6iePU8IOHJ8TGPsoaiz8mDWp8KkjSzgSw6NDGUOmlHuyOmLoGmv2F_HUMB6EdneBD1a8OrZYq5wsmYgyynKkolYQw2yaMKRvn1vT6e6y5jbL2Y1uBIrMPx237ujWvhONKG4fN8BSCu_0"/>
+<div class="absolute inset-0 bg-gradient-to-b from-white/80 via-white/50 to-white"></div>
+</div>
+<div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+<h1 class="font-display-hero text-display-hero text-on-surface mb-stack-lg">
+                    Rediscover Your Confidence with a Natural, Radiant Smile.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    Advanced digital smile rehabilitation using 3D technology for long-lasting results. Experience precision dentistry in a serene environment.
+                </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="bg-primary hover:bg-surface-tint text-on-primary rounded-full px-8 py-4 font-body-md text-body-md shadow-[0_4px_14px_0_rgba(0,102,204,0.39)] transition-transform scale-95 active:scale-90">
+                        Schedule Your Appointment
+                    </button>
+<button class="flex items-center gap-2 bg-[#f5f2ef] hover:bg-surface-variant text-on-surface rounded-full px-6 py-4 font-body-md text-body-md transition-colors shadow-premium-card border border-[#e5edf5]">
+<span class="material-symbols-outlined text-[#25D366]">chat</span>
+                        WhatsApp
+                    </button>
+</div>
+</div>
+</section>
+<!-- Tech Section -->
+<section class="py-section-gap px-6 max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Digital Smile Transformation</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Precision at every step of your journey.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Tech Card 1 -->
+<div class="bg-white rounded-[8px] p-6 border border-[#e5edf5] shadow-premium-card">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary">face</span>
+</div>
+<h3 class="font-h3 text-h3 text-on-surface mb-2 text-lg">Facial Scanning</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Mapping your facial aesthetics for perfect harmony.</p>
+</div>
+<!-- Tech Card 2 -->
+<div class="bg-white rounded-[8px] p-6 border border-[#e5edf5] shadow-premium-card">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary">document_scanner</span>
+</div>
+<h3 class="font-h3 text-h3 text-on-surface mb-2 text-lg">Intraoral Scanning</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">High-precision 3D models without messy impressions.</p>
+</div>
+<!-- Tech Card 3 -->
+<div class="bg-white rounded-[8px] p-6 border border-[#e5edf5] shadow-premium-card">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary">design_services</span>
+</div>
+<h3 class="font-h3 text-h3 text-on-surface mb-2 text-lg">Digital Design</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Visualize your final smile before treatment begins.</p>
+</div>
+<!-- Tech Card 4 -->
+<div class="bg-white rounded-[8px] p-6 border border-[#e5edf5] shadow-premium-card">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary">3d_rotation</span>
+</div>
+<h3 class="font-h3 text-h3 text-on-surface mb-2 text-lg">3D Planning</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Surgical precision guided by advanced software.</p>
+</div>
+</div>
+</section>
+<!-- Treatments Section -->
+<section class="py-section-gap px-6 bg-surface max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Comprehensive Treatments</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Expert care tailored to your unique smile needs.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Veneers</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Ultra-thin porcelain layers for a flawless, natural appearance.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Adhesive Rehabilitation</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Minimally invasive restorative techniques preserving natural tooth structure.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Restorations</h3>
+<p class="font-body-md text-on-surface-variant text-sm">High-quality, durable materials designed to seamlessly blend with your teeth.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Bruxism Management</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Advanced therapies and protective devices to prevent wear and alleviate tension.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Implants</h3>
+<p class="font-body-md text-on-surface-variant text-sm">State-of-the-art titanium roots for permanent, secure tooth replacement.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Gum Health</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Comprehensive periodontal care for a strong foundation and aesthetic symmetry.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Orthodontics</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Discreet, digitally planned alignment solutions for a perfectly straight smile.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Endodontics</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Precise root canal therapies focusing on pain relief and tooth preservation.</p>
+</div>
+<div class="bg-white rounded-[8px] p-8 border border-[#e5edf5] shadow-premium-card">
+<h3 class="font-h3 text-on-surface mb-2 text-xl">Oral Surgery</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Expert surgical procedures performed with utmost precision and care.</p>
+</div>
+</div>
+</section>
+<!-- Why Patients Choose Us Section -->
+<section class="py-section-gap px-6 max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Why Choose Elite Dental Studio</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Experience dentistry redefined.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 shrink-0 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">psychology</span>
+</div>
+<div>
+<h3 class="font-h3 text-lg text-on-surface mb-2">Personalized Treatment Plans</h3>
+<p class="font-body-md text-sm text-on-surface-variant">We design every step of your journey around your unique aesthetic goals and functional needs.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 shrink-0 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+<div>
+<h3 class="font-h3 text-lg text-on-surface mb-2">World-Class Specialists</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Our team consists of highly trained experts committed to continuous education and innovation.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 shrink-0 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">spa</span>
+</div>
+<div>
+<h3 class="font-h3 text-lg text-on-surface mb-2">Spa-Like Environment</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Relax in our serene, thoughtfully designed clinic spaces meant to reduce anxiety and elevate comfort.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 shrink-0 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">devices</span>
+</div>
+<div>
+<h3 class="font-h3 text-lg text-on-surface mb-2">Advanced Digital Workflow</h3>
+<p class="font-body-md text-sm text-on-surface-variant">From initial scan to final result, we utilize the latest digital technologies for ultimate precision.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Before & After Results Section -->
+<section class="py-section-gap px-6 bg-surface max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Real Transformations</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">See the life-changing results of our aesthetic treatments.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-white p-4 rounded-[8px] shadow-premium-card border border-[#e5edf5]">
+<div class="relative h-[300px] bg-slate-200 rounded-md overflow-hidden mb-4">
+<div class="absolute inset-0 flex">
+<div class="w-1/2 bg-slate-300 border-r-2 border-white flex items-center justify-center text-slate-500 font-medium">Before Placeholder</div>
+<div class="w-1/2 bg-slate-200 flex items-center justify-center text-slate-500 font-medium">After Placeholder</div>
+</div>
+</div>
+<h3 class="font-h3 text-lg text-on-surface mb-1">Porcelain Veneers</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Complete smile redesign for symmetry and brightness.</p>
+</div>
+<div class="bg-white p-4 rounded-[8px] shadow-premium-card border border-[#e5edf5]">
+<div class="relative h-[300px] bg-slate-200 rounded-md overflow-hidden mb-4">
+<div class="absolute inset-0 flex">
+<div class="w-1/2 bg-slate-300 border-r-2 border-white flex items-center justify-center text-slate-500 font-medium">Before Placeholder</div>
+<div class="w-1/2 bg-slate-200 flex items-center justify-center text-slate-500 font-medium">After Placeholder</div>
+</div>
+</div>
+<h3 class="font-h3 text-lg text-on-surface mb-1">Dental Implants</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Seamless restoration matching natural tooth aesthetics.</p>
+</div>
+</div>
+</section>
+<!-- Doctor Team Section -->
+<section class="py-section-gap px-6 max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Meet Our Specialists</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Dedicated professionals guiding your smile journey.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white rounded-[8px] overflow-hidden border border-[#e5edf5] shadow-premium-card text-center pb-6">
+<div class="h-[250px] bg-slate-200 flex items-center justify-center text-slate-500 mb-6">
+                    Photo Placeholder
+                </div>
+<h3 class="font-h3 text-xl text-on-surface mb-1">Dr. Elena Reyes</h3>
+<p class="font-body-md text-sm text-primary font-medium mb-3">Lead Prosthodontist</p>
+<p class="font-body-md text-sm text-on-surface-variant px-6">Specializes in complex full-mouth rehabilitation and aesthetic veneer design.</p>
+</div>
+<div class="bg-white rounded-[8px] overflow-hidden border border-[#e5edf5] shadow-premium-card text-center pb-6">
+<div class="h-[250px] bg-slate-200 flex items-center justify-center text-slate-500 mb-6">
+                    Photo Placeholder
+                </div>
+<h3 class="font-h3 text-xl text-on-surface mb-1">Dr. Marcus Vance</h3>
+<p class="font-body-md text-sm text-primary font-medium mb-3">Oral Surgeon &amp; Implantologist</p>
+<p class="font-body-md text-sm text-on-surface-variant px-6">Expert in guided implant surgery and advanced bone grafting techniques.</p>
+</div>
+<div class="bg-white rounded-[8px] overflow-hidden border border-[#e5edf5] shadow-premium-card text-center pb-6">
+<div class="h-[250px] bg-slate-200 flex items-center justify-center text-slate-500 mb-6">
+                    Photo Placeholder
+                </div>
+<h3 class="font-h3 text-xl text-on-surface mb-1">Dr. Sarah Chen</h3>
+<p class="font-body-md text-sm text-primary font-medium mb-3">Orthodontist</p>
+<p class="font-body-md text-sm text-on-surface-variant px-6">Focuses on digital aligner therapy for functional and aesthetic smile alignment.</p>
+</div>
+</div>
+</section>
+<!-- Patient Testimonials Section -->
+<section class="py-section-gap px-6 bg-surface max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Patient Stories</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Hear from those who have transformed their smiles.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="bg-white p-8 rounded-[8px] border border-[#e5edf5] shadow-premium-card">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center text-xs text-slate-500">Img</div>
+<div>
+<h4 class="font-semibold text-on-surface">Michael T.</h4>
+<div class="text-yellow-400 text-sm">★★★★★</div>
+</div>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant italic mb-4">"The digital design process was incredible. Being able to see my new smile before we even started gave me so much confidence in the team."</p>
+<div class="bg-slate-100 p-3 rounded-md flex items-center gap-2 cursor-pointer hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-primary">play_circle</span>
+<span class="text-xs text-on-surface font-medium">Listen to Audio Testimonial</span>
+</div>
+</div>
+<div class="bg-white p-8 rounded-[8px] border border-[#e5edf5] shadow-premium-card">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center text-xs text-slate-500">Img</div>
+<div>
+<h4 class="font-semibold text-on-surface">Sophia L.</h4>
+<div class="text-yellow-400 text-sm">★★★★★</div>
+</div>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant italic mb-4">"I always had anxiety about visiting the dentist, but Elite Studio changed everything. The spa-like atmosphere and gentle approach are unmatched."</p>
+<div class="bg-slate-100 p-3 rounded-md flex items-center gap-2 cursor-pointer hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-primary">play_circle</span>
+<span class="text-xs text-on-surface font-medium">Listen to Audio Testimonial</span>
+</div>
+</div>
+<div class="bg-white p-8 rounded-[8px] border border-[#e5edf5] shadow-premium-card">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center text-xs text-slate-500">Img</div>
+<div>
+<h4 class="font-semibold text-on-surface">James D.</h4>
+<div class="text-yellow-400 text-sm">★★★★★</div>
+</div>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant italic mb-4">"My implants look and feel completely natural. Dr. Vance's expertise made the surgical process smooth and painless. Highly recommend!"</p>
+<div class="bg-slate-100 p-3 rounded-md flex items-center gap-2 cursor-pointer hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-primary">play_circle</span>
+<span class="text-xs text-on-surface font-medium">Listen to Audio Testimonial</span>
+</div>
+</div>
+</div>
+<div class="text-center">
+<a class="inline-flex items-center gap-2 text-primary hover:text-surface-tint font-medium font-body-md transition-colors" href="#">
+            Read more reviews on Google <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</section>
+<!-- Location + Final CTA -->
+<section class="py-section-gap px-6 bg-on-surface">
+<div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
+<div class="flex-1 w-full text-center lg:text-left">
+<h2 class="font-h1 text-h1 text-white mb-stack-lg">Take the first step today</h2>
+<p class="font-body-lg text-body-lg text-slate-300 mb-8 max-w-xl mx-auto lg:mx-0">
+                    Join hundreds of patients who have transformed their lives through our advanced digital dentistry protocols. Visit us for a personalized consultation.
+                </p>
+<div class="mb-10 text-slate-300 font-body-md text-sm space-y-3">
+<p class="flex items-center justify-center lg:justify-start gap-2"><span class="material-symbols-outlined text-primary">location_on</span> 123 Elite Avenue, Medical District, NY 10001</p>
+<p class="flex items-center justify-center lg:justify-start gap-2"><span class="material-symbols-outlined text-primary">schedule</span> Mon - Fri: 8:00 AM - 6:00 PM | Sat: 9:00 AM - 2:00 PM</p>
+<p class="flex items-center justify-center lg:justify-start gap-2"><span class="material-symbols-outlined text-primary">call</span> (555) 123-4567</p>
+</div>
+<button class="bg-primary hover:bg-surface-tint text-on-primary rounded-full px-8 py-4 font-body-md text-body-md shadow-[0_4px_14px_0_rgba(0,102,204,0.39)] transition-transform scale-95 active:scale-90">
+                    Schedule My Appointment
+                </button>
+</div>
+<div class="flex-1 w-full">
+<div class="bg-slate-200 w-full h-[400px] rounded-[8px] flex items-center justify-center text-slate-500 font-medium">
+                Map Embed Placeholder
+            </div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-200 bg-slate-50">
+<div class="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div>
+<div class="text-lg font-black text-slate-900 mb-4">Elite Dental Studio</div>
+<p class="font-sans text-xs uppercase tracking-widest text-slate-500 mb-4">
+                    © 2024 Elite Dental Studio. Premium Aesthetic Dentistry.
+                </p>
+<div class="flex gap-4">
+<a class="text-slate-500 hover:text-blue-600 transition-all duration-300" href="#"><span class="material-symbols-outlined">share</span></a>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-sans text-xs uppercase tracking-widest text-slate-900 font-semibold mb-2">Legal</h4>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-500 hover:text-blue-600 hover:underline decoration-blue-600 underline-offset-4 transition-all duration-300" href="#">Privacy Policy</a>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-500 hover:text-blue-600 hover:underline decoration-blue-600 underline-offset-4 transition-all duration-300" href="#">Terms of Service</a>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-500 hover:text-blue-600 hover:underline decoration-blue-600 underline-offset-4 transition-all duration-300" href="#">Accessibility</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-sans text-xs uppercase tracking-widest text-slate-900 font-semibold mb-2">Patients</h4>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-500 hover:text-blue-600 hover:underline decoration-blue-600 underline-offset-4 transition-all duration-300" href="#">Patient Portal</a>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-500 hover:text-blue-600 hover:underline decoration-blue-600 underline-offset-4 transition-all duration-300" href="#">Sitemap</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-sans text-xs uppercase tracking-widest text-slate-900 font-semibold mb-2">Contact</h4>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-all duration-300 flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">call</span> (555) 123-4567
+                </a>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-all duration-300 flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">mail</span> hello@elitedental.com
+                </a>
+</div>
+</div>
+</footer>
+</body></html>

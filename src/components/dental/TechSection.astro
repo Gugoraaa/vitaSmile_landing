@@ -1,0 +1,16 @@
+---
+import TechCard from './TechCard.astro';
+import { techFeatures } from '../../data/tech';
+---
+
+<section class="py-section-gap px-6 max-w-container-max mx-auto">
+  <div class="text-center mb-16">
+    <h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Digital Smile Transformation</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">Precision at every step of your journey.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {techFeatures.map(feature => (
+      <TechCard icon={feature.icon} title={feature.title} description={feature.description} />
+    ))}
+  </div>
+</section>

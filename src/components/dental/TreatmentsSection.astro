@@ -1,0 +1,16 @@
+---
+import TreatmentCard from './TreatmentCard.astro';
+import { treatments } from '../../data/treatments';
+---
+
+<section class="py-section-gap px-6 bg-surface max-w-container-max mx-auto">
+  <div class="text-center mb-16">
+    <h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Comprehensive Treatments</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">Expert care tailored to your unique smile needs.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {treatments.map(t => (
+      <TreatmentCard title={t.title} description={t.description} />
+    ))}
+  </div>
+</section>
