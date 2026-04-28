@@ -4,11 +4,11 @@ import { beforeAfterCases } from '../../data/beforeAfter';
 ---
 
 <section class="py-section-gap px-6 bg-surface max-w-container-max mx-auto">
-  <div class="text-center mb-16">
+  <div data-animate class="text-center mb-16">
     <h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Real Transformations</h2>
     <p class="font-body-md text-body-md text-on-surface-variant">See the life-changing results of our aesthetic treatments.</p>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div data-animate-stagger class="grid grid-cols-1 md:grid-cols-2 gap-8">
     {beforeAfterCases.map(c => (
       <BeforeAfterCard title={c.title} description={c.description} />
     ))}

@@ -28,3 +28,29 @@ const { title, description } = Astro.props;
     <SiteFooter />
   </body>
 </html>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+  );
+
+  // Stagger grids: add data-animate + delay to each child
+  document.querySelectorAll('[data-animate-stagger]').forEach((container) => {
+    Array.from(container.children).forEach((child, i) => {
+      (child as HTMLElement).style.transitionDelay = `${i * 140}ms`;
+      child.setAttribute('data-animate', '');
+      observer.observe(child);
+    });
+  });
+
+  // Individual elements
+  document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
+</script>
