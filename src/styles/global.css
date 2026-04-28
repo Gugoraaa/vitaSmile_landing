@@ -92,6 +92,10 @@ body {
   color: #1a1c1d;
 }
 
+[data-scroll-section] {
+  scroll-margin-top: clamp(5.5rem, 7vw, 7.5rem);
+}
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

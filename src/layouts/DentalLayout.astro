@@ -30,27 +30,258 @@ const { title, description } = Astro.props;
 </html>
 
 <script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-          observer.unobserve(entry.target);
+  import gsap from 'gsap';
+  import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+  gsap.registerPlugin(ScrollToPlugin);
+
+  type CleanupFn = () => void;
+  type WindowWithCleanup = Window & {
+    __vitaSmileCleanup?: CleanupFn;
+  };
+
+  const globalWindow = window as WindowWithCleanup;
+  globalWindow.__vitaSmileCleanup?.();
+
+  const initScrollAnimations = () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('[data-animate-stagger]').forEach((container) => {
+      Array.from(container.children).forEach((child, i) => {
+        (child as HTMLElement).style.transitionDelay = `${i * 140}ms`;
+        child.setAttribute('data-animate', '');
+        observer.observe(child);
+      });
+    });
+
+    document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  };
+
+  const initSectionScroll = () => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-scroll-section]'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const wheelThreshold = 42;
+    const oversizedSectionRatio = 1.08;
+    const edgeThreshold = 72;
+    const wheelResetDelay = 180;
+    const clampIndex = gsap.utils.clamp(0, sections.length - 1);
+    let wheelIntent = 0;
+    let wheelResetTimer = 0;
+    let isAnimating = false;
+
+    if (sections.length < 2 || prefersReducedMotion.matches) {
+      return () => undefined;
+    }
+
+    const nav = document.querySelector('nav');
+
+    const getOffsetY = () => {
+      if (!(nav instanceof HTMLElement)) {
+        return 96;
+      }
+
+      const rect = nav.getBoundingClientRect();
+      return rect.top + rect.height + 12;
+    };
+
+    const getSectionStart = (section: HTMLElement) => Math.max(0, section.offsetTop - getOffsetY());
+
+    const getCurrentIndex = () => {
+      const probe = window.scrollY + getOffsetY() + Math.min(window.innerHeight * 0.22, 200);
+      let activeIndex = 0;
+
+      sections.forEach((section, index) => {
+        if (getSectionStart(section) <= probe) {
+          activeIndex = index;
         }
       });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-  );
 
-  // Stagger grids: add data-animate + delay to each child
-  document.querySelectorAll('[data-animate-stagger]').forEach((container) => {
-    Array.from(container.children).forEach((child, i) => {
-      (child as HTMLElement).style.transitionDelay = `${i * 140}ms`;
-      child.setAttribute('data-animate', '');
-      observer.observe(child);
-    });
-  });
+      return activeIndex;
+    };
 
-  // Individual elements
-  document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
+    const canLeaveSection = (direction: 1 | -1, section: HTMLElement) => {
+      if (section.offsetHeight <= window.innerHeight * oversizedSectionRatio) {
+        return true;
+      }
+
+      const start = getSectionStart(section);
+      const end = start + section.offsetHeight;
+
+      if (direction > 0) {
+        return window.scrollY + window.innerHeight >= end - edgeThreshold;
+      }
+
+      return window.scrollY <= start + edgeThreshold;
+    };
+
+    const isInteractiveTarget = (target: EventTarget | null) =>
+      target instanceof Element &&
+      Boolean(target.closest('a, button, input, textarea, select, iframe, [contenteditable="true"]'));
+
+    const isTypingTarget = (target: EventTarget | null) =>
+      target instanceof Element &&
+      Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
+
+    const scrollToSection = (section: HTMLElement) => {
+      const hash = section.id ? `#${section.id}` : '';
+
+      isAnimating = true;
+      gsap.killTweensOf(window);
+      gsap.to(window, {
+        duration: 1.2,
+        ease: 'power3.inOut',
+        overwrite: 'auto',
+        scrollTo: {
+          y: section,
+          offsetY: getOffsetY(),
+          autoKill: false,
+        },
+        onComplete: () => {
+          isAnimating = false;
+
+          if (hash && window.location.hash !== hash) {
+            history.replaceState(null, '', hash);
+          }
+        },
+        onInterrupt: () => {
+          isAnimating = false;
+        },
+      });
+    };
+
+    const goToIndex = (index: number) => {
+      const targetIndex = clampIndex(index);
+      const target = sections[targetIndex];
+
+      if (!target) {
+        return;
+      }
+
+      scrollToSection(target);
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      if (
+        isAnimating ||
+        event.ctrlKey ||
+        Math.abs(event.deltaY) < 4 ||
+        Math.abs(event.deltaY) < Math.abs(event.deltaX) ||
+        isInteractiveTarget(event.target)
+      ) {
+        return;
+      }
+
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const currentIndex = getCurrentIndex();
+      const currentSection = sections[currentIndex];
+
+      if (!currentSection || !canLeaveSection(direction, currentSection)) {
+        wheelIntent = 0;
+        return;
+      }
+
+      wheelIntent += event.deltaY;
+      window.clearTimeout(wheelResetTimer);
+      wheelResetTimer = window.setTimeout(() => {
+        wheelIntent = 0;
+      }, wheelResetDelay);
+
+      if (Math.abs(wheelIntent) < wheelThreshold) {
+        return;
+      }
+
+      const targetIndex = clampIndex(currentIndex + direction);
+      wheelIntent = 0;
+
+      if (targetIndex === currentIndex) {
+        return;
+      }
+
+      event.preventDefault();
+      goToIndex(targetIndex);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (isAnimating || isTypingTarget(event.target)) {
+        return;
+      }
+
+      const moveDownKeys = ['ArrowDown', 'PageDown', ' '];
+      const moveUpKeys = ['ArrowUp', 'PageUp'];
+      const shouldMoveDown = moveDownKeys.includes(event.key);
+      const shouldMoveUp = moveUpKeys.includes(event.key);
+
+      if (!shouldMoveDown && !shouldMoveUp) {
+        return;
+      }
+
+      const direction = shouldMoveDown ? 1 : -1;
+      const currentIndex = getCurrentIndex();
+      const currentSection = sections[currentIndex];
+
+      if (!currentSection || !canLeaveSection(direction, currentSection)) {
+        return;
+      }
+
+      const targetIndex = clampIndex(currentIndex + direction);
+
+      if (targetIndex === currentIndex) {
+        return;
+      }
+
+      event.preventDefault();
+      goToIndex(targetIndex);
+    };
+
+    const onAnchorClick = (event: MouseEvent) => {
+      const target = event.target;
+
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const anchor = target.closest<HTMLAnchorElement>('a[href^="#"]');
+      const href = anchor?.getAttribute('href');
+
+      if (!anchor || !href || href === '#') {
+        return;
+      }
+
+      const section = document.querySelector<HTMLElement>(href);
+
+      if (!section) {
+        return;
+      }
+
+      event.preventDefault();
+      scrollToSection(section);
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKeyDown);
+    document.addEventListener('click', onAnchorClick);
+
+    return () => {
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('click', onAnchorClick);
+      window.clearTimeout(wheelResetTimer);
+      gsap.killTweensOf(window);
+    };
+  };
+
+  const cleanupFns = [initScrollAnimations(), initSectionScroll()];
+  globalWindow.__vitaSmileCleanup = () => cleanupFns.forEach((cleanup) => cleanup());
 </script>
