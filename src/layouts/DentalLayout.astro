@@ -76,10 +76,13 @@ const { title, description } = Astro.props;
     const oversizedSectionRatio = 1.08;
     const edgeThreshold = 72;
     const wheelResetDelay = 180;
+    const animationDuration = 1.2;
+    const postAnimationLockMs = 180;
     const clampIndex = gsap.utils.clamp(0, sections.length - 1);
     let wheelIntent = 0;
     let wheelResetTimer = 0;
     let isAnimating = false;
+    let lockUntil = 0;
 
     if (sections.length < 2 || prefersReducedMotion.matches) {
       return () => undefined;
@@ -134,13 +137,21 @@ const { title, description } = Astro.props;
       target instanceof Element &&
       Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
 
+    const isScrollLocked = () => isAnimating || performance.now() < lockUntil;
+
+    const isScrollNavigationKey = (key: string) =>
+      ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(key);
+
     const scrollToSection = (section: HTMLElement) => {
       const hash = section.id ? `#${section.id}` : '';
 
       isAnimating = true;
+      lockUntil = performance.now() + animationDuration * 1000 + postAnimationLockMs;
+      wheelIntent = 0;
+      window.clearTimeout(wheelResetTimer);
       gsap.killTweensOf(window);
       gsap.to(window, {
-        duration: 1.2,
+        duration: animationDuration,
         ease: 'power3.inOut',
         overwrite: 'auto',
         scrollTo: {
@@ -150,6 +161,7 @@ const { title, description } = Astro.props;
         },
         onComplete: () => {
           isAnimating = false;
+          lockUntil = performance.now() + postAnimationLockMs;
 
           if (hash && window.location.hash !== hash) {
             history.replaceState(null, '', hash);
@@ -157,6 +169,7 @@ const { title, description } = Astro.props;
         },
         onInterrupt: () => {
           isAnimating = false;
+          lockUntil = performance.now() + postAnimationLockMs;
         },
       });
     };
@@ -173,8 +186,15 @@ const { title, description } = Astro.props;
     };
 
     const onWheel = (event: WheelEvent) => {
+      if (isScrollLocked()) {
+        if (!event.ctrlKey && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
+          event.preventDefault();
+        }
+        wheelIntent = 0;
+        return;
+      }
+
       if (
-        isAnimating ||
         event.ctrlKey ||
         Math.abs(event.deltaY) < 4 ||
         Math.abs(event.deltaY) < Math.abs(event.deltaX) ||
@@ -214,7 +234,14 @@ const { title, description } = Astro.props;
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (isAnimating || isTypingTarget(event.target)) {
+      if (isTypingTarget(event.target)) {
+        return;
+      }
+
+      if (isScrollLocked()) {
+        if (isScrollNavigationKey(event.key)) {
+          event.preventDefault();
+        }
         return;
       }
 
@@ -256,6 +283,11 @@ const { title, description } = Astro.props;
       const href = anchor?.getAttribute('href');
 
       if (!anchor || !href || href === '#') {
+        return;
+      }
+
+      if (isScrollLocked()) {
+        event.preventDefault();
         return;
       }
 
