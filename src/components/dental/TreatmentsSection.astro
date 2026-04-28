@@ -1,16 +1,670 @@
 ---
-import TreatmentCard from './TreatmentCard.astro';
-import { treatments } from '../../data/treatments';
+import { featuredTreatments, complementaryTreatments } from '../../data/treatments';
 ---
 
-<section class="py-section-gap px-6 bg-surface max-w-container-max mx-auto">
-  <div data-animate class="text-center mb-16">
-    <h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Comprehensive Treatments</h2>
-    <p class="font-body-md text-body-md text-on-surface-variant">Expert care tailored to your unique smile needs.</p>
-  </div>
-  <div data-animate-stagger class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {treatments.map(t => (
-      <TreatmentCard title={t.title} description={t.description} />
-    ))}
+<section class="treatments-gallery">
+  <div class="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12">
+    <div data-animate class="mb-16 text-center">
+      <h2 class="font-h2 text-h2 text-on-surface mb-stack-sm">Nuestros tratamientos</h2>
+      <p class="mx-auto max-w-lg font-body-md text-body-md text-on-surface-variant">
+        Nos especializamos en la rehabilitación de tu sonrisa y te ofrecemos todos los tratamientos
+        necesarios para lograrlo.
+      </p>
+    </div>
+
+    <div class="treatments-gallery__stage" data-animate>
+      <div class="treatments-gallery__viewport" id="premium-treatment-stack">
+        <div class="treatments-gallery__floor" aria-hidden="true"></div>
+        <div class="treatments-gallery__scene">
+          {featuredTreatments.map((t, index) => (
+            <article
+              class="treatment-stack-card"
+              data-index={index}
+              aria-label={`Ver ${t.title}`}
+              role="button"
+            >
+              <div class="treatment-stack-card__surface treatment-stack-card__surface--front">
+                <div class="treatment-stack-card__media">
+                  <img
+                    src={t.image}
+                    alt={t.title}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                </div>
+                <div class="treatment-stack-card__content">
+                  <p class="treatment-stack-card__category">{t.category}</p>
+                  <h3>{t.title}</h3>
+                  <p class="treatment-stack-card__description">{t.tagline}</p>
+                  <span class="treatment-stack-card__cta">
+                    Conocer tratamiento <span aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </div>
+
+              <div
+                class="treatment-stack-card__surface treatment-stack-card__surface--back"
+                aria-hidden="true"
+              >
+                <div class="treatment-stack-card__seal">
+                  <div class="treatment-stack-card__seal-ring">VS</div>
+                  <p>VitaSmile</p>
+                  <span>Tratamientos principales</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="treatments-gallery__controls" aria-label="Controles de tratamientos">
+        <button
+          id="premium-treatment-prev"
+          class="treatments-gallery__nav"
+          type="button"
+          aria-label="Tratamiento anterior"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.5 5.5 8 12l6.5 6.5" />
+          </svg>
+        </button>
+
+        <div class="treatments-gallery__dots">
+          {featuredTreatments.map((t, index) => (
+            <button
+              class="treatments-gallery__dot"
+              data-index={index}
+              type="button"
+              aria-label={`Ir a ${t.title}`}
+            ></button>
+          ))}
+        </div>
+
+        <button
+          id="premium-treatment-next"
+          class="treatments-gallery__nav"
+          type="button"
+          aria-label="Tratamiento siguiente"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m9.5 5.5 6.5 6.5-6.5 6.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div data-animate class="mt-20">
+      <p class="treatments-gallery__subheading">También realizamos</p>
+      <div class="border-t border-b border-stone-100">
+        <div class="mx-auto flex max-w-[1200px] flex-col divide-y divide-stone-100 md:flex-row md:divide-x md:divide-y-0">
+          {complementaryTreatments.map((t) => (
+            <div class="group flex-1 cursor-default px-8 py-10 text-center transition-colors duration-700 hover:bg-white">
+              <span
+                class="material-symbols-outlined mb-4 block text-[22px] text-primary/70 transition-colors duration-500 group-hover:text-primary"
+              >
+                {t.icon}
+              </span>
+              <p class="mb-2 text-[15px] font-medium text-on-surface transition-colors duration-500 group-hover:text-primary">
+                {t.title}
+              </p>
+              <p class="text-xs leading-relaxed text-on-surface-variant/50">
+                {t.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  .treatments-gallery {
+    --treatments-accent: #0066cc;
+    --treatments-accent-strong: #005cba;
+    --treatments-accent-border: rgba(0, 102, 204, 0.18);
+    --treatments-shadow: rgba(6, 27, 49, 0.14);
+    --treatments-shadow-soft: rgba(6, 27, 49, 0.08);
+    position: relative;
+    overflow: hidden;
+    padding: clamp(6rem, 9vw, 8.5rem) 0;
+    background: #ffffff;
+  }
+
+  .treatments-gallery__subheading {
+    margin-bottom: 2.5rem;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(26, 35, 51, 0.35);
+  }
+
+  .treatments-gallery__stage {
+    position: relative;
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+  }
+
+  .treatments-gallery__viewport {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2.25rem;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .treatments-gallery__scene {
+    position: relative;
+    height: clamp(31rem, 58vw, 43rem);
+    perspective: 1900px;
+    perspective-origin: 50% 36%;
+    transform-style: preserve-3d;
+    overflow: hidden;
+  }
+
+  .treatments-gallery__floor {
+    position: absolute;
+    left: 50%;
+    bottom: 2rem;
+    width: min(68%, 44rem);
+    height: 3.2rem;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(22, 34, 53, 0.18), rgba(22, 34, 53, 0.02) 72%, transparent 82%);
+    filter: blur(18px);
+    pointer-events: none;
+  }
+
+  .treatment-stack-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(84vw, 24.5rem);
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .treatment-stack-card[data-slot='left'] {
+    transform-origin: right center;
+  }
+
+  .treatment-stack-card[data-slot='right'] {
+    transform-origin: left center;
+  }
+
+  .treatment-stack-card__surface {
+    overflow: hidden;
+    border-radius: 1.5rem;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transition:
+      box-shadow 920ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 920ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 920ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 920ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 920ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .treatment-stack-card__surface--front {
+    background: #ffffff;
+    border: 1px solid rgba(0, 102, 204, 0.14);
+    box-shadow:
+      0 26px 70px var(--treatments-shadow),
+      0 8px 18px var(--treatments-shadow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  }
+
+  .treatment-stack-card__surface--back {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    transform: rotateY(180deg);
+    border: 1px solid var(--treatments-accent-border);
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(238, 245, 255, 0.95)),
+      radial-gradient(circle at top, rgba(0, 102, 204, 0.12), transparent 56%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.94),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+      0 18px 40px rgba(6, 27, 49, 0.08);
+  }
+
+  .treatment-stack-card__seal {
+    display: grid;
+    justify-items: center;
+    gap: 0.85rem;
+    color: var(--treatments-accent);
+    text-align: center;
+  }
+
+  .treatment-stack-card__seal-ring {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid rgba(0, 102, 204, 0.24);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    font-size: 1.05rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  .treatment-stack-card__seal p,
+  .treatment-stack-card__seal span {
+    margin: 0;
+  }
+
+  .treatment-stack-card__seal p {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .treatment-stack-card__seal span {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.58;
+  }
+
+  .treatment-stack-card__media {
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: #ffffff;
+  }
+
+  .treatment-stack-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 920ms cubic-bezier(0.22, 1, 0.36, 1), filter 920ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .treatment-stack-card__content {
+    padding: 1.45rem 1.55rem 1.6rem;
+  }
+
+  .treatment-stack-card__category {
+    margin: 0 0 0.85rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(0, 102, 204, 0.84);
+  }
+
+  .treatment-stack-card__content h3 {
+    margin: 0;
+    font-size: clamp(1.5rem, 1.6vw, 1.75rem);
+    line-height: 1.06;
+    letter-spacing: -0.045em;
+    color: #122033;
+  }
+
+  .treatment-stack-card__description {
+    margin: 0.95rem 0 1.35rem;
+    min-height: 4.5rem;
+    font-size: 0.98rem;
+    line-height: 1.68;
+    color: rgba(18, 32, 51, 0.68);
+  }
+
+  .treatment-stack-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--treatments-accent);
+  }
+
+  .treatment-stack-card[data-slot='center'] .treatment-stack-card__surface--front {
+    box-shadow:
+      0 34px 88px rgba(6, 27, 49, 0.16),
+      0 12px 28px rgba(6, 27, 49, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  }
+
+  .treatment-stack-card[data-slot='center'] .treatment-stack-card__media img {
+    transform: scale(1.02);
+    filter: saturate(1.04);
+  }
+
+  .treatment-stack-card[data-slot='left'] .treatment-stack-card__surface--front,
+  .treatment-stack-card[data-slot='right'] .treatment-stack-card__surface--front {
+    filter: saturate(0.96) brightness(0.99);
+  }
+
+  .treatment-stack-card[data-slot='back'] .treatment-stack-card__surface--back {
+    filter: saturate(0.9);
+  }
+
+  .treatment-stack-card:is([data-slot='left'], [data-slot='right']):hover .treatment-stack-card__surface--front,
+  .treatment-stack-card:is([data-slot='left'], [data-slot='right']):focus-visible .treatment-stack-card__surface--front {
+    border-color: rgba(0, 102, 204, 0.32);
+    box-shadow:
+      0 28px 66px rgba(6, 27, 49, 0.16),
+      0 10px 24px rgba(6, 27, 49, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    transform: translateY(-0.3rem);
+  }
+
+  .treatments-gallery__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.8rem;
+  }
+
+  .treatments-gallery__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: 1px solid rgba(0, 102, 204, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--treatments-accent);
+    box-shadow:
+      0 10px 24px rgba(6, 27, 49, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    transition:
+      transform 300ms ease,
+      border-color 300ms ease,
+      color 300ms ease,
+      background-color 300ms ease;
+  }
+
+  .treatments-gallery__nav:hover,
+  .treatments-gallery__nav:focus-visible {
+    border-color: rgba(0, 102, 204, 0.38);
+    color: var(--treatments-accent);
+    background: rgba(255, 255, 255, 0.94);
+    transform: translateY(-1px);
+  }
+
+  .treatments-gallery__nav svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .treatments-gallery__dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .treatments-gallery__dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(191, 178, 160, 0.82);
+    transition:
+      width 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .treatments-gallery__dot[data-active='true'] {
+    width: 1.7rem;
+    background: var(--treatments-accent-strong);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 63.99rem) {
+    .treatments-gallery__viewport {
+      border-radius: 1.85rem;
+    }
+
+    .treatments-gallery__scene {
+      height: clamp(29rem, 72vw, 39rem);
+    }
+
+    .treatment-stack-card {
+      width: min(82vw, 21.5rem);
+    }
+
+    .treatment-stack-card__content {
+      padding: 1.25rem 1.25rem 1.4rem;
+    }
+
+    .treatment-stack-card__description {
+      min-height: 4.2rem;
+      font-size: 0.93rem;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .treatments-gallery__scene {
+      height: clamp(28rem, 112vw, 34rem);
+    }
+
+    .treatment-stack-card {
+      width: min(82vw, 19.5rem);
+    }
+
+    .treatment-stack-card__surface {
+      border-radius: 1.35rem;
+    }
+
+    .treatments-gallery__controls {
+      gap: 0.75rem;
+      margin-top: 1.35rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .treatment-stack-card,
+    .treatment-stack-card__surface,
+    .treatment-stack-card__media img,
+    .treatments-gallery__nav,
+    .treatments-gallery__dot {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('premium-treatment-stack');
+    const section = root?.closest('.treatments-gallery');
+    const scene = root?.querySelector('.treatments-gallery__scene');
+    if (!root || !section || !scene) return;
+
+    const cards = Array.from(root.querySelectorAll('.treatment-stack-card'));
+    const dots = Array.from(section.querySelectorAll('.treatments-gallery__dot'));
+    const prevButton = section.querySelector('#premium-treatment-prev');
+    const nextButton = section.querySelector('#premium-treatment-next');
+    const total = cards.length;
+    const slotNames = ['center', 'right', 'back', 'left'];
+    const easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
+    let activeIndex = 0;
+
+    function getLayout() {
+      const width = scene.clientWidth;
+
+      if (width < 420) {
+        return {
+          offsetX: 94,
+          sideY: 16,
+          angleY: 27,
+          centerZ: 68,
+          sideZ: -46,
+          backZ: -150,
+          sideScale: 0.76,
+          backScale: 0.66,
+        };
+      }
+
+      if (width < 768) {
+        return {
+          offsetX: 124,
+          sideY: 18,
+          angleY: 29,
+          centerZ: 74,
+          sideZ: -48,
+          backZ: -156,
+          sideScale: 0.79,
+          backScale: 0.68,
+        };
+      }
+
+      if (width < 1100) {
+        return {
+          offsetX: 180,
+          sideY: 18,
+          angleY: 31,
+          centerZ: 80,
+          sideZ: -42,
+          backZ: -162,
+          sideScale: 0.83,
+          backScale: 0.72,
+        };
+      }
+
+      return {
+        offsetX: 258,
+        sideY: 14,
+        angleY: 33,
+        centerZ: 88,
+        sideZ: -38,
+        backZ: -168,
+        sideScale: 0.86,
+        backScale: 0.76,
+      };
+    }
+
+    function getSlots() {
+      const layout = getLayout();
+
+      return [
+        {
+          name: 'center',
+          transform: `translate(-50%, -50%) translateZ(${layout.centerZ}px) rotateY(0deg) scale(1)`,
+          opacity: 1,
+          zIndex: 40,
+          interactive: true,
+        },
+        {
+          name: 'right',
+          transform: `translate(-50%, -50%) translateX(${layout.offsetX}px) translateY(${layout.sideY}px) translateZ(${layout.sideZ}px) rotateY(${layout.angleY}deg) scale(${layout.sideScale})`,
+          opacity: 0.9,
+          zIndex: 28,
+          interactive: true,
+        },
+        {
+          name: 'back',
+          transform: `translate(-50%, -50%) translateZ(${layout.backZ}px) rotateY(180deg) scale(${layout.backScale})`,
+          opacity: 0.58,
+          zIndex: 14,
+          interactive: false,
+        },
+        {
+          name: 'left',
+          transform: `translate(-50%, -50%) translateX(-${layout.offsetX}px) translateY(${layout.sideY}px) translateZ(${layout.sideZ}px) rotateY(-${layout.angleY}deg) scale(${layout.sideScale})`,
+          opacity: 0.9,
+          zIndex: 28,
+          interactive: true,
+        },
+      ];
+    }
+
+    function applyState() {
+      const slots = getSlots();
+
+      cards.forEach((card, index) => {
+        const relativeIndex = (index - activeIndex + total) % total;
+        const slot = slots[relativeIndex];
+        const slotName = slotNames[relativeIndex];
+        const isBack = slotName === 'back';
+        const isActive = slotName === 'center';
+
+        card.dataset.slot = slotName;
+        card.dataset.active = String(isActive);
+        card.style.transform = slot.transform;
+        card.style.opacity = String(slot.opacity);
+        card.style.zIndex = String(slot.zIndex);
+        card.style.pointerEvents = slot.interactive ? 'auto' : 'none';
+        card.tabIndex = isBack ? -1 : 0;
+        card.setAttribute('aria-hidden', isBack ? 'true' : 'false');
+      });
+
+      dots.forEach((dot, index) => {
+        const isActive = index === activeIndex;
+        dot.dataset.active = String(isActive);
+        dot.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    function goTo(index) {
+      activeIndex = (index + total) % total;
+      applyState();
+    }
+
+    prevButton?.addEventListener('click', () => goTo(activeIndex - 1));
+    nextButton?.addEventListener('click', () => goTo(activeIndex + 1));
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const nextIndex = Number(dot.getAttribute('data-index') || 0);
+        goTo(nextIndex);
+      });
+    });
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const nextIndex = Number(card.getAttribute('data-index') || 0);
+        if (nextIndex !== activeIndex) {
+          goTo(nextIndex);
+        }
+      });
+
+      card.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        const nextIndex = Number(card.getAttribute('data-index') || 0);
+        if (nextIndex !== activeIndex) {
+          goTo(nextIndex);
+        }
+      });
+    });
+
+    section.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goTo(activeIndex - 1);
+      }
+
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goTo(activeIndex + 1);
+      }
+    });
+
+    applyState();
+
+    requestAnimationFrame(() => {
+      cards.forEach((card) => {
+        card.style.transition = `transform 920ms ${easing}, opacity 860ms ${easing}`;
+      });
+    });
+
+    window.addEventListener('resize', applyState, { passive: true });
+  })();
+</script>

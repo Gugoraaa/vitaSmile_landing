@@ -1,43 +1,67 @@
-export interface Treatment {
+export interface FeaturedTreatment {
+  category: string;
+  title: string;
+  tagline: string;
+  image: string;
+}
+
+export interface ComplementaryTreatment {
+  icon: string;
   title: string;
   description: string;
 }
 
-export const treatments: Treatment[] = [
+export const featuredTreatments: FeaturedTreatment[] = [
   {
-    title: 'Veneers',
-    description: 'Ultra-thin porcelain layers for a flawless, natural appearance.',
+    category: 'Estética dental',
+    title: 'Carillas',
+    tagline: 'Transforma tu sonrisa con resultados naturales. Veremos el resultado antes de iniciar el proceso.',
+    image: 'https://images.unsplash.com/photo-1769559893692-c6d0623bf8e4?auto=format&fit=crop&w=800&q=80',
   },
   {
-    title: 'Adhesive Rehabilitation',
-    description: 'Minimally invasive restorative techniques preserving natural tooth structure.',
+    category: 'Restauración avanzada',
+    title: 'Rehabilitación integral adhesiva',
+    tagline: 'Técnicas que salvan tus dientes evitando perderlos y recuperando su estética y función sin sacrificar más tejido sano.',
+    image: 'https://images.unsplash.com/photo-1661438818937-437f1aeaf08e?auto=format&fit=crop&w=800&q=80',
   },
   {
-    title: 'Restorations',
-    description: 'High-quality, durable materials designed to seamlessly blend with your teeth.',
+    category: 'Implantología',
+    title: 'Implantes',
+    tagline: 'Reemplazamos dientes que, lamentablemente, has perdido en el camino, mediante técnicas guiadas.',
+    image: 'https://images.unsplash.com/photo-1617812191081-2a24e3f30e45?auto=format&fit=crop&w=800&q=80',
   },
   {
-    title: 'Bruxism Management',
-    description: 'Advanced therapies and protective devices to prevent wear and alleviate tension.',
+    category: 'Alineación dental',
+    title: 'Ortodoncia',
+    tagline: 'Necesitamos dientes alineados que funcionen correctamente para lograr tu sonrisa soñada.',
+    image: 'https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?auto=format&fit=crop&w=800&q=80',
+  },
+];
+
+export const complementaryTreatments: ComplementaryTreatment[] = [
+  {
+    icon: 'auto_fix_high',
+    title: 'Resinas y eliminación de caries',
+    description: 'Eliminamos las caries de forma mínima y conservadora.',
   },
   {
-    title: 'Implants',
-    description: 'State-of-the-art titanium roots for permanent, secure tooth replacement.',
+    icon: 'shield',
+    title: 'Hábito bruxista',
+    description: 'Protegemos tus dientes del desgaste mientras duermes.',
   },
   {
-    title: 'Gum Health',
-    description: 'Comprehensive periodontal care for a strong foundation and aesthetic symmetry.',
+    icon: 'favorite',
+    title: 'Salud de tus encías',
+    description: 'El sangrado en tu cepillado no es normal.',
   },
   {
-    title: 'Orthodontics',
-    description: 'Discreet, digitally planned alignment solutions for a perfectly straight smile.',
+    icon: 'vaccines',
+    title: 'Endodoncia',
+    description: 'El dolor de dientes no es normal, pero lo eliminamos.',
   },
   {
-    title: 'Endodontics',
-    description: 'Precise root canal therapies focusing on pain relief and tooth preservation.',
-  },
-  {
-    title: 'Oral Surgery',
-    description: 'Expert surgical procedures performed with utmost precision and care.',
+    icon: 'medical_services',
+    title: 'Extracciones · Cirugía',
+    description: 'Muela del juicio y procedimientos de precisión.',
   },
 ];

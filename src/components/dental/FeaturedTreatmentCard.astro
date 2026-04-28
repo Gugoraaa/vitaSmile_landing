@@ -1,0 +1,38 @@
+---
+interface Props {
+  category: string;
+  title: string;
+  tagline: string;
+  image: string;
+}
+
+const { category, title, tagline, image } = Astro.props;
+---
+
+<article class="group bg-white rounded-2xl overflow-hidden border border-stone-100 hover:border-stone-200 hover:shadow-xl transition-all duration-700 ease-out cursor-default">
+
+  <!-- Image -->
+  <div class="aspect-[4/3] overflow-hidden bg-stone-100">
+    <img
+      src={image}
+      alt={title}
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+    />
+  </div>
+
+  <!-- Content -->
+  <div class="p-8">
+    <p class="text-[10px] uppercase tracking-[0.22em] text-on-surface-variant/50 font-medium mb-4">{category}</p>
+    <h3 class="text-[22px] font-light tracking-tight text-on-surface mb-3 leading-snug">{title}</h3>
+    <p class="text-sm text-on-surface-variant leading-relaxed mb-7">{tagline}</p>
+    <a
+      href="#"
+      class="inline-flex items-center gap-1.5 text-primary text-sm font-medium
+             group-hover:gap-3 transition-all duration-300"
+    >
+      Conocer más
+      <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+    </a>
+  </div>
+
+</article>
