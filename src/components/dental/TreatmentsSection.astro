@@ -15,32 +15,34 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     </div>
 
     <!-- Grid de 4 cards ─────────────────────────────────────────────────── -->
-    <div data-animate class="tg-grid" style="transition-delay:120ms;">
-      {featuredTreatments.map((t) => (
-        <article class="tg-card">
-          <!-- Imagen -->
-          <div class="tg-card__media">
-            <img src={t.image} alt={t.title} loading="lazy" decoding="async" />
-          </div>
+    <div class="tg-grid">
+      {featuredTreatments.map((t, index) => (
+        <div data-animate style={`transition-delay:${120 + index * 140}ms;`} class="tg-card-reveal">
+          <article class="tg-card">
+            <!-- Imagen -->
+            <div class="tg-card__media">
+              <img src={t.image} alt={t.title} loading="lazy" decoding="async" />
+            </div>
 
-          <!-- Contenido -->
-          <div class="tg-card__body">
-            <div class="tg-card__accent" aria-hidden="true"></div>
-            <p class="tg-card__category">{t.category}</p>
-            <h3 class="tg-card__title">{t.title}</h3>
-            <p class="tg-card__tagline">{t.tagline}</p>
-          </div>
-        </article>
+            <!-- Contenido -->
+            <div class="tg-card__body">
+              <div class="tg-card__accent" aria-hidden="true"></div>
+              <p class="tg-card__category">{t.category}</p>
+              <h3 class="tg-card__title">{t.title}</h3>
+              <p class="tg-card__tagline">{t.tagline}</p>
+            </div>
+          </article>
+        </div>
       ))}
     </div>
 
     <!-- Tratamientos complementarios ───────────────────────────────────── -->
-    <div data-animate class="mt-24" style="transition-delay:80ms;">
-      <p class="tg-sublabel">También realizamos</p>
+    <div class="mt-24">
+      <p data-animate class="tg-sublabel" style="transition-delay:80ms;">También realizamos</p>
       <div class="tg-band">
         <div class="tg-band__inner">
-          {complementaryTreatments.map((t) => (
-            <div class="tg-band__item">
+          {complementaryTreatments.map((t, index) => (
+            <div data-animate style={`transition-delay:${160 + index * 120}ms;`} class="tg-band__item">
               <span class="material-symbols-outlined tg-band__icon">{t.icon}</span>
               <p class="tg-band__name">{t.title}</p>
               <p class="tg-band__desc">{t.description}</p>
@@ -92,8 +94,27 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     .tg-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
+  .tg-card-reveal {
+    height: 100%;
+  }
+
+  .tg-card-reveal[data-animate] {
+    opacity: 0;
+    transform: translateY(42px);
+    will-change: opacity, transform;
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tg-card-reveal[data-animate].animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* ── Card ────────────────────────────────────────────────────────────── */
   .tg-card {
+    height: 100%;
     background: #ffffff;
     border-radius: 1.5rem;
     overflow: hidden;
@@ -206,11 +227,25 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     text-align: center;
     cursor: default;
     border-bottom: 1px solid rgba(6, 27, 49, 0.08);
+    opacity: 1;
     /* línea superior que aparece en hover */
     box-shadow: inset 0 3px 0 transparent;
     transition:
+      opacity           0.82s cubic-bezier(0.16, 1, 0.3, 1),
+      transform         0.82s cubic-bezier(0.16, 1, 0.3, 1),
       background-color  0.55s ease,
       box-shadow        0.55s ease;
+  }
+
+  .tg-band__item[data-animate] {
+    opacity: 0;
+    transform: translateX(-40px);
+    will-change: opacity, transform;
+  }
+
+  .tg-band__item[data-animate].animate-in {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   .tg-band__item:last-child { border-bottom: none; }
@@ -258,5 +293,16 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     font-size: 0.75rem;
     line-height: 1.6;
     color: rgba(6, 27, 49, 0.38);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tg-card-reveal[data-animate],
+    .tg-card-reveal[data-animate].animate-in,
+    .tg-band__item[data-animate],
+    .tg-band__item[data-animate].animate-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
