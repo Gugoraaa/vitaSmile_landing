@@ -15,19 +15,19 @@ export const featuredTreatments: FeaturedTreatment[] = [
   {
     category: 'Estética dental',
     title: 'Carillas',
-    tagline: 'Transforma tu sonrisa con resultados naturales. Veremos el resultado antes de iniciar el proceso.',
+    tagline: 'Transforma tu sonrisa con resultados naturales que armonizan con tu rostro.',
     image: 'https://images.unsplash.com/photo-1769559893692-c6d0623bf8e4?auto=format&fit=crop&w=800&q=80',
   },
   {
     category: 'Restauración avanzada',
     title: 'Rehabilitación integral adhesiva',
-    tagline: 'Técnicas que salvan tus dientes evitando perderlos y recuperando su estética y función sin sacrificar más tejido sano.',
+    tagline: 'Técnicas que salvan tus dientes evitando perderlos y recuperando su estética y función.',
     image: 'https://images.unsplash.com/photo-1661438818937-437f1aeaf08e?auto=format&fit=crop&w=800&q=80',
   },
   {
     category: 'Implantología',
     title: 'Implantes',
-    tagline: 'Reemplazamos dientes que, lamentablemente, has perdido en el camino, mediante técnicas guiadas.',
+    tagline: 'Reemplazamos dientes que, lamentablemente, has perdido en el camino.',
     image: 'https://images.unsplash.com/photo-1617812191081-2a24e3f30e45?auto=format&fit=crop&w=800&q=80',
   },
   {

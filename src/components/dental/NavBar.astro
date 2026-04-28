@@ -1,35 +1,56 @@
 ---
 const navLinks = [
-  { label: 'Smile Gallery', href: '#' },
-  { label: 'Treatments', href: '#' },
-  { label: 'Specialists', href: '#' },
-  { label: 'Technology', href: '#' },
-  { label: 'Reviews', href: '#' },
+  { label: 'Inicio', href: '#', icon: 'home' },
+  { label: 'Tratamientos', href: '#', icon: 'medical_services' },
+  { label: 'Especialistas', href: '#', icon: 'group' },
+  { label: 'Tecnologia', href: '#', icon: 'biotech' },
+  { label: 'Resenas', href: '#', icon: 'forum' },
 ];
 ---
 
-<nav class="fixed top-0 w-full z-50 border-b border-slate-200/50 bg-white/70 backdrop-blur-xl transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-    <div class="text-xl font-bold tracking-tighter text-slate-900">
-      VitaSmile
+<nav class="fixed inset-x-0 top-4 z-50 px-3 md:px-6">
+  <div class="mx-auto flex h-[58px] w-full max-w-7xl items-center justify-between rounded-[1.75rem] border border-slate-200/80 bg-white/88 px-4 shadow-[0_18px_60px_rgba(6,27,49,0.12)] backdrop-blur-xl md:px-6">
+    <a
+      href="#"
+      class="shrink-0 text-[1.05rem] font-semibold tracking-[-0.04em] text-on-surface transition-opacity duration-300 hover:opacity-85"
+      aria-label="VitaSmile"
+    >
+      VitaSmile<span class="text-primary">.</span>
+    </a>
+
+    <div class="hidden flex-1 items-center justify-center lg:flex">
+      <div class="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50/90 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+        {navLinks.map((link) => (
+          <a
+            class="group flex items-center gap-2 rounded-full px-3 py-2 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-on-surface-variant transition-all duration-300 hover:bg-white hover:text-primary active:scale-[0.98]"
+            href={link.href}
+          >
+            <span class="material-symbols-outlined text-[15px] leading-none text-primary transition-transform duration-300 group-hover:-translate-y-[1px]">
+              {link.icon}
+            </span>
+            <span>{link.label}</span>
+          </a>
+        ))}
+      </div>
     </div>
-    <div class="hidden md:flex items-center gap-8">
-      {navLinks.map(link => (
-        <a
-          class="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-blue-600 transition-colors"
-          href={link.href}
-        >
-          {link.label}
-        </a>
-      ))}
-    </div>
-    <div class="flex items-center gap-4">
-      <button class="hidden md:block bg-primary text-white font-sans text-sm font-medium tracking-tight px-5 py-2.5 rounded-full hover:opacity-80 scale-95 active:scale-90 transition-all duration-200 shadow-sm">
-        Book Consultation
-      </button>
-      <button class="md:hidden text-slate-900 p-2">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="tel:+5266741555881"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-on-surface transition-all duration-300 hover:border-primary/25 hover:bg-primary/5 hover:text-primary active:scale-[0.98] lg:hidden"
+        aria-label="Llamar a VitaSmile"
+      >
+        <span class="material-symbols-outlined text-[18px]">call</span>
+      </a>
+
+      <a
+        href="https://wa.me/526674155881"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold tracking-tight text-on-primary shadow-[0_10px_24px_rgba(0,102,204,0.24)] transition-all duration-300 hover:-translate-y-[1px] hover:bg-surface-tint active:scale-[0.98] md:px-5"
+      >
+        Agenda cita
+      </a>
     </div>
   </div>
 </nav>
