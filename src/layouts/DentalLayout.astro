@@ -1,5 +1,6 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
+import Preloader from '../components/Preloader.astro';
 import NavBar from '../components/dental/NavBar.astro';
 import SiteFooter from '../components/dental/SiteFooter.astro';
 
@@ -12,7 +13,7 @@ const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html class="light" lang="en">
+<html class="light" lang="en" data-preloader-stage="active">
   <head>
     <BaseHead title={title} description={description} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,6 +22,7 @@ const { title, description } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   </head>
   <body class="antialiased selection:bg-primary-container selection:text-white">
+    <Preloader brand="VITASMILE" />
     <NavBar />
     <main class="pt-24 md:pt-28">
       <slot />
@@ -42,31 +44,128 @@ const { title, description } = Astro.props;
 
   const globalWindow = window as WindowWithCleanup;
   globalWindow.__vitaSmileCleanup?.();
+  const preloaderCompleteEvent = 'vitasmile:preloader-complete';
+
+  const initPreloader = () => {
+    const root = document.documentElement;
+    const preloader = document.querySelector<HTMLElement>('[data-preloader]');
+
+    if (!preloader) {
+      delete root.dataset.preloaderStage;
+      window.dispatchEvent(new CustomEvent(preloaderCompleteEvent));
+      return () => undefined;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const totalDuration = Number(preloader.dataset.preloaderDuration ?? '2800');
+    const exitDuration = prefersReducedMotion.matches ? 180 : 920;
+    const hideDelay = prefersReducedMotion.matches ? 120 : totalDuration;
+    let hideTimer = 0;
+    let removeTimer = 0;
+
+    root.dataset.preloaderStage = 'active';
+    preloader.classList.remove('is-complete');
+
+    hideTimer = window.setTimeout(() => {
+      root.dataset.preloaderStage = 'revealing';
+      preloader.classList.add('is-complete');
+
+      removeTimer = window.setTimeout(() => {
+        delete root.dataset.preloaderStage;
+        preloader.remove();
+        window.dispatchEvent(new CustomEvent(preloaderCompleteEvent));
+      }, exitDuration);
+    }, hideDelay);
+
+    return () => {
+      window.clearTimeout(hideTimer);
+      window.clearTimeout(removeTimer);
+      delete root.dataset.preloaderStage;
+      preloader.remove();
+    };
+  };
 
   const initScrollAnimations = () => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-            observer.unobserve(entry.target);
+    let observer: IntersectionObserver | null = null;
+
+    const prepareTypewriterAnimations = () => {
+      document.querySelectorAll<HTMLElement>('[data-animate-typewriter]').forEach((element) => {
+        if (element.dataset.typewriterReady === 'true') {
+          return;
+        }
+
+        const sourceText = element.textContent?.replace(/\s+/g, ' ').trim();
+
+        if (!sourceText) {
+          return;
+        }
+
+        element.dataset.typewriterReady = 'true';
+        element.setAttribute('aria-label', sourceText);
+        element.textContent = '';
+
+        const fragment = document.createDocumentFragment();
+        let characterIndex = 0;
+
+        Array.from(sourceText).forEach((character) => {
+          if (character === ' ') {
+            fragment.append(document.createTextNode(' '));
+            return;
           }
+
+          const span = document.createElement('span');
+          span.className = 'typewriter-char';
+          span.textContent = character;
+          span.style.setProperty('--char-index', `${characterIndex}`);
+          span.setAttribute('aria-hidden', 'true');
+          fragment.append(span);
+          characterIndex += 1;
         });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    );
 
-    document.querySelectorAll('[data-animate-stagger]').forEach((container) => {
-      Array.from(container.children).forEach((child, i) => {
-        (child as HTMLElement).style.transitionDelay = `${i * 140}ms`;
-        child.setAttribute('data-animate', '');
-        observer.observe(child);
+        element.append(fragment);
       });
-    });
+    };
 
-    document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
+    const startObserver = () => {
+      if (observer) {
+        return;
+      }
 
-    return () => observer.disconnect();
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate-in');
+              observer?.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('[data-animate-stagger]').forEach((container) => {
+        Array.from(container.children).forEach((child, i) => {
+          (child as HTMLElement).style.transitionDelay = `${i * 140}ms`;
+          child.setAttribute('data-animate', '');
+          observer?.observe(child);
+        });
+      });
+
+      document.querySelectorAll('[data-animate]').forEach((el) => observer?.observe(el));
+    };
+
+    prepareTypewriterAnimations();
+
+    if (document.documentElement.dataset.preloaderStage) {
+      window.addEventListener(preloaderCompleteEvent, startObserver, { once: true });
+    } else {
+      startObserver();
+    }
+
+    return () => {
+      window.removeEventListener(preloaderCompleteEvent, startObserver);
+      observer?.disconnect();
+    };
   };
 
   const initSectionScroll = () => {
@@ -314,6 +413,6 @@ const { title, description } = Astro.props;
     };
   };
 
-  const cleanupFns = [initScrollAnimations(), initSectionScroll()];
+  const cleanupFns = [initPreloader(), initScrollAnimations(), initSectionScroll()];
   globalWindow.__vitaSmileCleanup = () => cleanupFns.forEach((cleanup) => cleanup());
 </script>

@@ -114,10 +114,35 @@ body {
   transform: translateY(0);
 }
 
+[data-animate-typewriter][data-animate] {
+  opacity: 1;
+  transform: none;
+}
+
+[data-animate-typewriter] .typewriter-char {
+  opacity: 0;
+  transition:
+    opacity 80ms linear,
+    filter 220ms ease;
+  transition-delay: calc(var(--typewriter-initial-delay, 0ms) + (var(--char-index) * var(--typewriter-step, 36ms)));
+  filter: blur(3px);
+}
+
+[data-animate-typewriter].animate-in .typewriter-char {
+  opacity: 1;
+  filter: blur(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-animate] {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  [data-animate-typewriter] .typewriter-char {
+    opacity: 1;
+    filter: none;
     transition: none;
   }
 }
