@@ -233,8 +233,8 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     transition:
       opacity           0.82s cubic-bezier(0.16, 1, 0.3, 1),
       transform         0.82s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color  0.55s ease,
-      box-shadow        0.55s ease;
+      background-color  180ms ease-out,
+      box-shadow        220ms ease-out;
   }
 
   .tg-band__item[data-animate] {
@@ -263,6 +263,7 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     box-shadow:
       inset 0 3px 0 #0066cc,
       0 8px 32px rgba(6, 27, 49, 0.05);
+    transition-delay: 0ms !important;
   }
 
   .tg-band__icon {
@@ -270,7 +271,9 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     display: block;
     margin-bottom: 1.125rem;
     color: #0066cc;
-    transition: color 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition:
+      color 160ms ease-out,
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .tg-band__item:hover .tg-band__icon {
@@ -284,7 +287,7 @@ import { featuredTreatments, complementaryTreatments } from '../../data/treatmen
     letter-spacing: -0.01em;
     color: #061b31;
     margin-bottom: 0.5rem;
-    transition: color 0.5s ease;
+    transition: color 160ms ease-out;
   }
 
   .tg-band__item:hover .tg-band__name { color: #0066cc; }

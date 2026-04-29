@@ -24,7 +24,7 @@ const { title, description } = Astro.props;
   <body class="antialiased selection:bg-primary-container selection:text-white">
     <Preloader brand="VITASMILE" />
     <NavBar />
-    <main class="pt-24 md:pt-28">
+    <main>
       <slot />
     </main>
     <SiteFooter />
@@ -135,7 +135,15 @@ const { title, description } = Astro.props;
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.add('animate-in');
+              const target = entry.target as HTMLElement;
+              const resetTransitionDelay = () => {
+                target.style.transitionDelay = '';
+                target.removeEventListener('transitionend', resetTransitionDelay);
+              };
+
+              target.classList.add('animate-in');
+              target.addEventListener('transitionend', resetTransitionDelay);
+              window.setTimeout(resetTransitionDelay, 2400);
               observer?.unobserve(entry.target);
             }
           });
@@ -172,7 +180,6 @@ const { title, description } = Astro.props;
     const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-scroll-section]'));
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const wheelThreshold = 42;
-    const oversizedSectionRatio = 1.08;
     const edgeThreshold = 72;
     const wheelResetDelay = 180;
     const animationDuration = 1.2;
@@ -200,6 +207,20 @@ const { title, description } = Astro.props;
 
     const getSectionStart = (section: HTMLElement) => Math.max(0, section.offsetTop - getOffsetY());
 
+    const getSectionBuffer = (section: HTMLElement) => {
+      const marginBottom = Number.parseFloat(window.getComputedStyle(section).marginBottom);
+      return Number.isFinite(marginBottom) ? marginBottom : 0;
+    };
+
+    const getMinimumSectionDwell = (section: HTMLElement) => {
+      const buffer = getSectionBuffer(section);
+      const viewportBasedDwell = window.innerHeight * 0.28;
+      const bufferBasedDwell = buffer * 0.9;
+      const maxDwell = Math.min(window.innerHeight * 0.58, 520);
+
+      return Math.min(Math.max(viewportBasedDwell, bufferBasedDwell, 112), maxDwell);
+    };
+
     const getCurrentIndex = () => {
       const probe = window.scrollY + getOffsetY() + Math.min(window.innerHeight * 0.22, 200);
       let activeIndex = 0;
@@ -214,15 +235,14 @@ const { title, description } = Astro.props;
     };
 
     const canLeaveSection = (direction: 1 | -1, section: HTMLElement) => {
-      if (section.offsetHeight <= window.innerHeight * oversizedSectionRatio) {
-        return true;
-      }
-
       const start = getSectionStart(section);
-      const end = start + section.offsetHeight;
 
       if (direction > 0) {
-        return window.scrollY + window.innerHeight >= end - edgeThreshold;
+        const bottomReleaseDistance =
+          section.offsetHeight - window.innerHeight + getSectionBuffer(section) * 0.88 - edgeThreshold;
+        const releaseDistance = Math.max(getMinimumSectionDwell(section), bottomReleaseDistance, 0);
+
+        return window.scrollY >= start + releaseDistance;
       }
 
       return window.scrollY <= start + edgeThreshold;

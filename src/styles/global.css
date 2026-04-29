@@ -63,6 +63,7 @@
   --spacing-stack-lg: 24px;
   --spacing-gutter: 32px;
   --spacing-section-gap: 120px;
+  --spacing-scroll-section-buffer: clamp(14rem, 36vh, 30rem);
   --spacing-margin-mobile: 20px;
 
   /* Font families */
@@ -93,7 +94,18 @@ body {
 }
 
 [data-scroll-section] {
+  margin-bottom: var(--spacing-scroll-section-buffer);
   scroll-margin-top: clamp(5.5rem, 7vw, 7.5rem);
+}
+
+main > [data-scroll-section]:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  [data-scroll-section] {
+    margin-bottom: clamp(10rem, 30vh, 18rem);
+  }
 }
 
 .material-symbols-outlined {
